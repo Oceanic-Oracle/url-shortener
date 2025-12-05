@@ -1,0 +1,150 @@
+linters:
+  enable:
+    - govet
+    - errcheck
+    - staticcheck
+    - gosimple
+    - unused
+    - revive
+    - ineffassign
+    - typecheck
+    - bodyclose
+    - dupl
+    - errname
+    - errorlint
+    - forcetypeassert
+    - gochecknoinits
+    - gocognit
+    - goconst
+    - gocritic
+    - godot
+    - gomoddirectives
+    - goprintffuncname
+    - gosec
+    - lll
+    - makezero
+    - mirror
+    - nakedret
+    - nestif
+    - nilerr
+    - nilnil
+    - noctx
+    - nolintlint
+    - nonamedreturns
+    - nosprintfhostport
+    - predeclared
+    - promlinter
+    - protogetter
+    - reassign
+    - rowserrcheck
+    - sloglint
+    - sqlclosecheck
+    - stylecheck
+    - testableexamples
+    - testifylint
+    - testpackage
+    - unconvert
+    - unparam
+    - usestdlibvars
+    - wastedassign
+    - whitespace
+    - wsl
+    - nlreturn
+    - gofmt
+    - gci
+    - depguard
+
+  disable:
+    - goimports
+    - ireturn
+    - musttag
+    - exhaustruct
+    - gochecknoglobals
+    - paralleltest
+    - godox
+    - wrapcheck
+    - gofumpt
+    - tagliatelle
+
+linters-settings:
+  depguard:
+    rules:
+      main:
+        files: ["cmd/**/*.go"]
+        allow:
+          - internal/app
+          - log
+          - context
+          - os
+          - time
+
+      app:
+        files: ["internal/app/**/*.go"]
+        allow:
+          - internal/server
+          - internal/config
+          - internal/infra/logger
+          - context
+          - log/slog
+
+      server_http:
+        files: ["internal/server/http/**/*.go"]
+        allow:
+          - internal/repo
+          - internal/dto
+          - internal/app/errors
+          - internal/infra/logger
+          - internal/logctx
+          - net/http
+
+      repo:
+        files: ["internal/repo/**/*.go"]
+        allow:
+          - internal/app/errors
+          - context
+          - database/sql
+          - github.com/jackc/pgx/v5/pgxpool
+
+      infra:
+        files:
+          - internal/infra/**/*.go
+          - internal/logctx/**/*.go
+        allow:
+          - log/slog
+          - context
+          - os
+          - errors
+          - github.com/jackc/pgx/v5/pgxpool
+
+      shared:
+        files:
+          - internal/dto/**/*.go
+          - internal/app/errors/**/*.go
+        allow:
+          - github.com/google/uuid
+          - errors
+          - fmt
+
+  revive:
+    rules:
+      - name: exported
+        disabled: true
+      - name: var-naming
+        disabled: false
+
+  wsl:
+    force-err-cuddling: true
+
+  nolintlint:
+    require-explanation: true
+    require-specific: true
+
+  nlreturn:
+    block-size: 2
+
+issues:
+  exclude-files:
+    - "test"
+
+run:
+  issues-exit-code: 1
