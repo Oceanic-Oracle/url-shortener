@@ -5,6 +5,8 @@ services:
       - "6379"
     env_file:
       - .env
+    networks:
+      - shortener-network
     volumes:
       - ./redis-data:/data
     healthcheck:

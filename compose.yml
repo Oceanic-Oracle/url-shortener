@@ -1,2 +1,7 @@
 include:
+  - url-shortener/compose.shortener.yml
   - redis/compose.redis.yml
+
+networks:
+  shortener-network:
+    driver: bridge
