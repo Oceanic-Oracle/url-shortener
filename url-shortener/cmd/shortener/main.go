@@ -1,7 +1,7 @@
 package main
 
 import (
-	"shortener/internal/app"
+	"shortener/internal/bootstrap"
 	"shortener/internal/config"
 	"shortener/internal/infra/logger"
 )

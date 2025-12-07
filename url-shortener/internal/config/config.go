@@ -2,6 +2,7 @@ package config
 
 import (
 	"log"
+	"time"
 
 	"github.com/ilyakaznacheev/cleanenv"
 )
@@ -11,9 +12,10 @@ const (
 )
 
 type Config struct {
-	Env        string `env:"ENV"`
-	Htppserver Httpserver
-	Storage    Storage
+	Env          string `env:"ENV"`
+	Httpserver   Httpserver
+	Storage      Storage
+	URLShortener URLShortener
 }
 
 type Httpserver struct {
@@ -29,8 +31,8 @@ type Storage struct {
 }
 
 type URLShortener struct {
-	TTL    int `env:"URL_TTL_MINUTES"`
-	Length int `env:"URL_LENGTH"`
+	TTL    time.Duration `env:"URL_TTL"`
+	Length int           `env:"URL_LENGTH"`
 }
 
 func MustLoad() *Config {

@@ -13,7 +13,7 @@ var seededRand = rand.New(rand.NewSource(time.Now().UnixNano()))
 func GenerateShortCode(length int) string {
 	answByte := make([]byte, length)
 	for i := range answByte {
-		answByte[i] = charset[seededRand.Intn(length)]
+		answByte[i] = charset[seededRand.Intn(len(charset))]
 	}
 
 	return string(answByte)

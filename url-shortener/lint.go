@@ -59,7 +59,9 @@ func installGCI() error {
 }
 
 func runGCI() error {
-	cmd := exec.Command("sh", "-c", "find . -name '*.go' -not -path './vendor/*' -not -path './gen/*' | xargs gci write")
+	cmd := exec.Command("sh", "-c",
+		`find . -name '*.go' -not -path './vendor/*' -not -path './gen/*'`+
+			`| xargs gci write -s standard -s "Prefix(shortener)" -s default`)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 

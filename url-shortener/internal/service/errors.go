@@ -1,6 +1,13 @@
 package service
 
-import "net/http"
+import (
+	"errors"
+	"net/http"
+)
+
+var (
+	ErrFailedGenerateShortCode = errors.New("failed to generate unique short code after 5 attempts")
+)
 
 type AppError struct {
 	Code    string `json:"code"`

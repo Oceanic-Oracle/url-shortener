@@ -12,6 +12,7 @@ import (
 	"shortener/internal/infra/database"
 	"shortener/internal/repo"
 	urlredis "shortener/internal/repo/url/redis"
+	"shortener/internal/service"
 )
 
 type Bootstrap struct {
@@ -20,8 +21,10 @@ type Bootstrap struct {
 }
 
 func (b *Bootstrap) Run() {
-	_, closeDB := b.initRepo()
+	repos, closeDB := b.initRepo()
 	defer closeDB()
+
+	_ = service.NewServiceURL(b.cfg.URLShortener, repos, b.log)
 
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, syscall.SIGTERM, syscall.SIGINT)
@@ -50,7 +53,7 @@ func (b *Bootstrap) initRepo() (*repo.Repo, func()) {
 
 		repos := repo.NewRepo(urlDB)
 
-		return repos, func() { rdb.Close() }
+		return repos, func() { _ = rdb.Close() }
 	default:
 		b.log.Error("unsupported storage type", "type", b.cfg.Storage.Type)
 		os.Exit(1)

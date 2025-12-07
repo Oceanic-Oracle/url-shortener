@@ -6,6 +6,9 @@ import (
 )
 
 type URLInterface interface {
-	CreateURL(context.Context, LongURL, int, time.Duration) (ShortURL, error)
-	GetURL(context.Context, ShortURL) (LongURL, error)
+	SaveURL(ctx context.Context, shortURL ShortURL, longURL LongURL, ttl time.Duration) error
+	GetShortURLByLong(ctx context.Context, longURL LongURL) (ShortURL, error)
+	GetLongURLByShort(ctx context.Context, shortURL ShortURL) (LongURL, error)
+	GetShortURLByLongWithTTLUpdate(ctx context.Context, longURL LongURL, ttl time.Duration) (ShortURL, error)
+	GetLongURLByShortWithTTLUpdate(ctx context.Context, shortURL ShortURL, ttl time.Duration) (LongURL, error)
 }
