@@ -19,6 +19,7 @@ type Config struct {
 }
 
 type HTTP struct {
+	Host        string `env:"SERVER_HOST"`
 	Addr        string `env:"SERVER_ADDR"`
 	Timeout     string `env:"SERVER_TIMEOUT_SECONDS"`
 	IdleTimeout string `env:"SERVER_IDLE_TIMEOUT_SECONDS"`

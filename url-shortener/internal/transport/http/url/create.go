@@ -12,9 +12,13 @@ import (
 	errorhandle "shortener/internal/transport/http/error"
 )
 
-func CreateURL(svc *service.ServiceURL, log *slog.Logger) http.HandlerFunc {
+func CreateURL(svc *service.ServiceURL, host string, log *slog.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var body dto.CreateCodeURLRequest
+		if err := body.Validate(host); err != nil {
+			errorhandle.SendAppError(w, service.WrapErrBadRequest(err))
+			return
+		}
 
 		if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
 			errorhandle.SendAppError(w, service.WrapErrBadRequest(err))

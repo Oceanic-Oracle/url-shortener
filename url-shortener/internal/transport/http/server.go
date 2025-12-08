@@ -22,7 +22,7 @@ type Server struct {
 func (s *Server) CreateServer() func() {
 	router := chi.NewRouter()
 
-	router.Post("/shorten", url.CreateURL(s.svc, s.log))
+	router.Post("/shorten", url.CreateURL(s.svc, s.cfg.Host, s.log))
 	router.Get("/{code}", url.RedirectURL(s.svc, s.log))
 
 	corsHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
