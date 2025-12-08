@@ -16,10 +16,10 @@ func GenerateShortCode(longURL, salt string, length int) string {
 	answByte := make([]byte, length)
 
 	for i := range length {
-		ambit := (i*4)%(len(hash)-3)
+		ambit := (i * 4) % (len(hash) - 3)
 
 		var sum int
-		for _, val := range hash[ambit:ambit+4] {
+		for _, val := range hash[ambit : ambit+4] {
 			sum += int(val)
 		}
 

@@ -5,16 +5,17 @@ import (
 	"encoding/json"
 	"log/slog"
 	"net/http"
+	"time"
+
 	"shortener/internal/dto"
 	"shortener/internal/service"
 	errorhandle "shortener/internal/transport/http/error"
-	"time"
 )
 
 func CreateURL(svc *service.ServiceURL, log *slog.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var body dto.CreateCodeURLRequest
-		
+
 		if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
 			errorhandle.SendAppError(w, service.WrapErrBadRequest(err))
 			return

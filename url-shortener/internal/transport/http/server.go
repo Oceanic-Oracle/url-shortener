@@ -3,13 +3,14 @@ package http
 import (
 	"log/slog"
 	"net/http"
-	"shortener/internal/config"
-	"shortener/internal/service"
-	"shortener/internal/transport/http/url"
 	"strconv"
 	"time"
 
 	"github.com/go-chi/chi"
+
+	"shortener/internal/config"
+	"shortener/internal/service"
+	"shortener/internal/transport/http/url"
 )
 
 type Server struct {

@@ -4,11 +4,12 @@ import (
 	"context"
 	"log/slog"
 	"net/http"
-	"shortener/internal/service"
-	errorhandle "shortener/internal/transport/http/error"
 	"time"
 
 	"github.com/go-chi/chi"
+
+	"shortener/internal/service"
+	errorhandle "shortener/internal/transport/http/error"
 )
 
 func RedirectURL(svc *service.ServiceURL, log *slog.Logger) http.HandlerFunc {

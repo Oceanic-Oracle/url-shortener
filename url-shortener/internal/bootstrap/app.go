@@ -28,6 +28,7 @@ func (b *Bootstrap) Run() {
 	svc := service.NewServiceURL(b.cfg.URLShortener, repos, b.log)
 
 	srv := http.NewRestAPI(&b.cfg.HTTP, svc, b.log)
+
 	closeSrv := srv.CreateServer()
 	defer closeSrv()
 
