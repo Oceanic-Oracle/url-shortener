@@ -22,6 +22,14 @@ func (h *HandlerMiddleware) Handle(ctx context.Context, record slog.Record) erro
 		if c.ReqID != "" {
 			record.Add("req_id", c.ReqID)
 		}
+
+		if c.Code != "" {
+			record.Add("code", c.Code)
+		}
+
+		if c.URL != "" {
+			record.Add("url", c.URL)
+		}
 	}
 
 	return h.next.Handle(ctx, record)
