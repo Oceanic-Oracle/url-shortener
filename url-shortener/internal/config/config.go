@@ -13,16 +13,16 @@ const (
 
 type Config struct {
 	Env          string `env:"ENV"`
-	Httpserver   Httpserver
+	HTTP         HTTP
 	Storage      Storage
 	URLShortener URLShortener
 }
 
-type Httpserver struct {
-	Addr         string `env:"SERVER_ADDR"`
-	Timeout      string `env:"SERVER_TIMEOUT_SECONDS"`
-	IddleTimeout string `env:"SERVER_IDLE_TIMEOUT_SECONDS"`
-	MaxConn      string `env:"SERVER_MAX_CONN"`
+type HTTP struct {
+	Addr        string `env:"SERVER_ADDR"`
+	Timeout     string `env:"SERVER_TIMEOUT_SECONDS"`
+	IdleTimeout string `env:"SERVER_IDLE_TIMEOUT_SECONDS"`
+	MaxConn     string `env:"SERVER_MAX_CONN"`
 }
 
 type Storage struct {

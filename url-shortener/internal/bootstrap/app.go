@@ -13,6 +13,7 @@ import (
 	"shortener/internal/repo"
 	urlredis "shortener/internal/repo/url/redis"
 	"shortener/internal/service"
+	"shortener/internal/transport/http"
 )
 
 type Bootstrap struct {
@@ -24,7 +25,11 @@ func (b *Bootstrap) Run() {
 	repos, closeDB := b.initRepo()
 	defer closeDB()
 
-	_ = service.NewServiceURL(b.cfg.URLShortener, repos, b.log)
+	svc := service.NewServiceURL(b.cfg.URLShortener, repos, b.log)
+
+	srv := http.NewRestAPI(&b.cfg.HTTP, svc, b.log)
+	closeSrv := srv.CreateServer()
+	defer closeSrv()
 
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, syscall.SIGTERM, syscall.SIGINT)
