@@ -9,7 +9,8 @@ import (
 
 const (
 	envDebug = "debug"
-	envProd  = "prod"
+	envInfo  = "info"
+	envError = "error"
 )
 
 func SetupLogger(env string) *slog.Logger {
@@ -18,8 +19,12 @@ func SetupLogger(env string) *slog.Logger {
 	switch env {
 	case envDebug:
 		level = slog.LevelDebug
-	case envProd:
+	case envInfo:
 		level = slog.LevelInfo
+	case envError:
+		level = slog.LevelError
+	default:
+		level = slog.LevelDebug
 	}
 
 	return slog.New(logctx.NewHandlerMiddleware(

@@ -6,6 +6,13 @@ docker compose up --build
 После запуска:
 - Сервис будет доступен на http://localhost:8080
 
+## Тесты
+Тесты находятся в папке [test](url-shortener/test/) \
+Запуск:
+```bash
+make e2e
+```
+
 ## Нагрузочное тестирование
 Тестирование проводилось с помощью `hey` при следующих условиях:
 - 1 контейнер 
@@ -31,4 +38,8 @@ GET /{code}
 ## Линтер
 В проекте используется `golangci-lint` для статического анализа кода. \
 Конфигурация: [.golangci.yml](pr/.golangci.yml).\
-Использовать можно через: [lint.go](url-shortener/lint.go)
+Использовать можно через: [lint.go](url-shortener/lint.go) \
+Запуск:
+```bash
+make lint
+```
