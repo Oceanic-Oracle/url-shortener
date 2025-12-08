@@ -8,10 +8,13 @@ services:
     networks:
       - shortener-network
     volumes:
-      - ./redis-data:/data
+      - redis-data:/data
     healthcheck:
       test: ["CMD", "redis-cli", "--no-auth-warning", "-a", "${REDIS_PASSWORD}", "ping"]
       interval: 5s
       timeout: 5s
       retries: 5
     command: redis-server --requirepass ${REDIS_PASSWORD}
+
+volumes:
+  redis-data:
