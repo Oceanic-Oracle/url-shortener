@@ -6,7 +6,7 @@ import (
 )
 
 var (
-	ErrFailedGenerateShortCode = errors.New("failed to generate unique short code after 5 attempts")
+	ErrURLCollision = errors.New("URL collision")
 )
 
 type AppError struct {

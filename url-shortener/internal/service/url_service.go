@@ -17,31 +17,26 @@ type ServiceURL struct {
 }
 
 func (su *ServiceURL) CreateShortURL(ctx context.Context, longURL string) (string, error) {
-	shortURL, err := su.repos.URL.GetShortURLByLong(ctx, url.LongURL(longURL))
-	if err == nil {
-		return string(shortURL), nil
-	}
+	shortURL := GenerateShortCode(longURL, su.cfg.Salt, su.cfg.Length)
 
-	if !errors.Is(err, url.ErrURLNotFound) {
+	if err := su.repos.URL.SaveURL(ctx, url.ShortURL(shortURL), url.LongURL(longURL), su.cfg.TTL); err != nil {
+		if errors.Is(err, url.ErrURLExists) {
+			exLongURL, err := su.repos.URL.GetLongURLByShort(ctx, url.ShortURL(shortURL))
+			if err != nil {
+				return "", WrapErrInternalServer(err)
+			}
+
+			if exLongURL != url.LongURL(longURL) {
+				return "", WrapErrInternalServer(ErrURLCollision)
+			}
+
+			return shortURL, nil
+		}
+
 		return "", WrapErrInternalServer(err)
 	}
 
-	for range 5 {
-		shortURL := GenerateShortCode(su.cfg.Length)
-
-		err := su.repos.URL.SaveURL(ctx, url.ShortURL(shortURL), url.LongURL(longURL), su.cfg.TTL)
-		if err != nil {
-			if !errors.Is(err, url.ErrLongURLExists) && !errors.Is(err, url.ErrShortURLExists) {
-				return "", WrapErrInternalServer(err)
-			} else {
-				continue
-			}
-		}
-
-		return shortURL, nil
-	}
-
-	return "", WrapErrInternalServer(ErrFailedGenerateShortCode)
+	return shortURL, nil
 }
 
 func (su *ServiceURL) GetLongURL(ctx context.Context, shortURL string) (string, error) {

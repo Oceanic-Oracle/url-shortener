@@ -33,6 +33,7 @@ type Storage struct {
 type URLShortener struct {
 	TTL    time.Duration `env:"URL_TTL"`
 	Length int           `env:"URL_LENGTH"`
+	Salt   string        `env:"URL_SALT"`
 }
 
 func MustLoad() *Config {
