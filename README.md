@@ -1,10 +1,10 @@
 ## Запуск
 Убедитесь, что Docker запущен, затем соберите и запустите сервис:
 ```bash
-docker compose up --build
+docker compose up --build --scale shortener={number of containers}
 ```
 После запуска:
-- Сервис будет доступен на http://localhost:8080
+- Сервис будет доступен на http://localhost
 
 ## Тесты
 Тесты находятся в папке [test](url-shortener/test/) \
