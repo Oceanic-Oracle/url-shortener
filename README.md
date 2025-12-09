@@ -39,7 +39,7 @@ GET /{code}
 
 ## Линтер
 В проекте используется `golangci-lint` для статического анализа кода. \
-Конфигурация: [.golangci.yml](pr/.golangci.yml).\
+Конфигурация: [.golangci.yml](url-shortener/.golangci.yml).\
 Использовать можно через: [lint.go](url-shortener/lint.go) \
 Запуск:
 ```bash
@@ -47,7 +47,7 @@ make lint
 ```
 
 ## Переменные окружения
-Находятся в [lint.go](url-shortener/.env)
+Находятся в [.env](url-shortener/.env)
 ```
 # Logger
 ENV=debug
