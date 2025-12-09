@@ -1,10 +1,12 @@
 ## Запуск
-Убедитесь, что Docker запущен, затем соберите и запустите сервис:
+#### Убедитесь, что Docker запущен, затем соберите и запустите сервис:
 ```bash
 docker compose up --build --scale shortener={number of containers}
 ```
 После запуска:
 - Сервис будет доступен на http://localhost
+
+#### Сервер работает по адресу https://url-shortener-1cjv.onrender.com
 
 ## Тесты
 Тесты находятся в папке [test](url-shortener/test/) \
@@ -42,4 +44,27 @@ GET /{code}
 Запуск:
 ```bash
 make lint
+```
+
+## Переменные окружения
+Находятся в [lint.go](url-shortener/.env)
+```
+# Logger
+ENV=debug
+
+# Server
+SERVER_HOST=localhost
+SERVER_ADDR=:8080
+SERVER_TIMEOUT_SECONDS=60
+SERVER_IDLE_TIMEOUT_SECONDS=4
+SERVER_MAX_CONN=1
+
+# Databse
+DB_TYPE=redis
+DB_URL=redis://:sdnsfnsdnsgqerqew234whdnd@redis:6379
+
+# URL Shortener
+URL_TTL=60m
+URL_LENGTH=10
+URL_SALT=6gdpqq9chviajjkflnvGVHjklmlkva7
 ```
