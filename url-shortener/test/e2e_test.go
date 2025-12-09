@@ -10,13 +10,14 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"testing"
+	"time"
+
 	app "shortener/internal/bootstrap"
 	"shortener/internal/config"
 	"shortener/internal/dto"
 	"shortener/internal/infra/database"
 	"shortener/internal/infra/logger"
-	"testing"
-	"time"
 )
 
 var (

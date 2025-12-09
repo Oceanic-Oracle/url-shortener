@@ -39,8 +39,11 @@ type URLShortener struct {
 
 func MustLoad() *Config {
 	var cfg Config
-	if err := cleanenv.ReadConfig(PATH, &cfg); err != nil {
-		log.Fatalf("can not read config: %s", err)
+
+	_ = cleanenv.ReadConfig(PATH, &cfg)
+
+	if err := cleanenv.ReadEnv(&cfg); err != nil {
+		log.Fatalf("failed to read environment variables: %v", err)
 	}
 
 	return &cfg
