@@ -1,0 +1,8 @@
+include:
+  - nginx/compose.nginx.yml
+  - url-shortener/compose.shortener.yml
+  - redis/compose.redis.yml
+
+networks:
+  shortener-network:
+    driver: bridge

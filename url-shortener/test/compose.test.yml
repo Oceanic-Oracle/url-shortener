@@ -1,0 +1,16 @@
+services:
+  redis-test:
+    image: redis:latest
+    ports:
+      - "6380:6379"
+    env_file:
+      - .env
+    healthcheck:
+      test: ["CMD", "redis-cli", "--no-auth-warning", "-a", "${REDIS_PASSWORD}", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    command: redis-server --requirepass ${REDIS_PASSWORD}
+
+volumes:
+  redis-data:

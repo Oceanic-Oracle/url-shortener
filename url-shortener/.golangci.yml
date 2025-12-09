@@ -1,0 +1,81 @@
+linters:
+  enable:
+    - govet
+    - errcheck
+    - staticcheck
+    - gosimple
+    - unused
+    - revive
+    - ineffassign
+    - typecheck
+    - bodyclose
+    - dupl
+    - errname
+    - errorlint
+    - forcetypeassert
+    - gochecknoinits
+    - gocognit
+    - goconst
+    - gocritic
+    - godot
+    - gomoddirectives
+    - goprintffuncname
+    - gosec
+    - lll
+    - makezero
+    - mirror
+    - nakedret
+    - nestif
+    - nilerr
+    - nilnil
+    - noctx
+    - nolintlint
+    - nonamedreturns
+    - nosprintfhostport
+    - predeclared
+    - promlinter
+    - protogetter
+    - reassign
+    - rowserrcheck
+    - sloglint
+    - sqlclosecheck
+    - stylecheck
+    - testableexamples
+    - testifylint
+    - testpackage
+    - unconvert
+    - unparam
+    - usestdlibvars
+    - wastedassign
+    - whitespace
+    - wsl
+    - nlreturn
+    - gofmt
+    - intrange
+    - err113
+
+linters-settings:
+
+  revive:
+    rules:
+      - name: exported
+        disabled: true
+      - name: var-naming
+        disabled: false
+
+  wsl:
+    force-err-cuddling: true
+
+  nolintlint:
+    require-explanation: true
+    require-specific: true
+
+  nlreturn:
+    block-size: 2
+
+issues:
+  exclude-files:
+    - "test"
+
+run:
+  issues-exit-code: 1
