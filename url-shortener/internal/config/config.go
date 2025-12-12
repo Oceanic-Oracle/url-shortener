@@ -7,12 +7,8 @@ import (
 	"github.com/ilyakaznacheev/cleanenv"
 )
 
-const (
-	PATH = "../.env"
-)
-
 type Config struct {
-	Env          string `env:"ENV"`
+	Env          string `env:"LEVEL"`
 	HTTP         HTTP
 	Storage      Storage
 	URLShortener URLShortener
@@ -37,10 +33,10 @@ type URLShortener struct {
 	Salt   string        `env:"URL_SALT"`
 }
 
-func MustLoad() *Config {
+func MustLoad(path string) *Config {
 	var cfg Config
 
-	_ = cleanenv.ReadConfig(PATH, &cfg)
+	_ = cleanenv.ReadConfig(path, &cfg)
 
 	if err := cleanenv.ReadEnv(&cfg); err != nil {
 		log.Fatalf("failed to read environment variables: %v", err)

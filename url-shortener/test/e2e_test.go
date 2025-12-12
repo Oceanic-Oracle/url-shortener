@@ -20,22 +20,9 @@ import (
 	"shortener/internal/infra/logger"
 )
 
-var (
-	env      = "error"
-	httpHost = "http://localhost"
-	httpAddr = ":9090"
-	redisCfg = config.Storage{
-		Type: "redis",
-		URL:  "redis://:sdnsfnsdnsgqerqew234whdnd@localhost:6380",
-	}
-)
+var cfg = config.MustLoad("./.env")
 
 func TestMain(m *testing.M) {
-	cfg := config.MustLoad()
-	cfg.Env = env
-	cfg.Storage = redisCfg
-	cfg.HTTP.Addr = httpAddr
-
 	logger := logger.SetupLogger(cfg.Env)
 
 	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
@@ -62,7 +49,7 @@ func waitForDB(ctx context.Context, log *slog.Logger) error {
 		case <-ctx.Done():
 			return ctx.Err()
 		default:
-			pool, err := database.GetRedisConnectionPool(ctx, redisCfg.URL, log)
+			pool, err := database.GetRedisConnectionPool(ctx, cfg.Storage.URL, log)
 			if err != nil {
 				time.Sleep(3 * time.Second)
 				continue
@@ -77,7 +64,7 @@ func waitForDB(ctx context.Context, log *slog.Logger) error {
 }
 
 func Request(reqBody []byte, method, path string) ([]byte, int, error) {
-	req, err := http.NewRequest(method, httpHost+httpAddr+path, bytes.NewBuffer(reqBody))
+	req, err := http.NewRequest(method, "http://"+cfg.HTTP.Host+cfg.HTTP.Addr+path, bytes.NewBuffer(reqBody))
 	if err != nil {
 		return nil, 0, fmt.Errorf("failed to create request: %w", err)
 	}

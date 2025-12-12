@@ -17,7 +17,7 @@ make e2e
 
 ## Нагрузочное тестирование
 Тестирование проводилось с помощью `hey` при следующих условиях:
-- 1 контейнер 
+- 1 контейнер
 - 30 параллельных соединений
 - 10 минут нагрузки
 
@@ -47,8 +47,11 @@ make lint
 ```
 
 ## Переменные окружения
-Находятся в [.env](url-shortener/.env)
+Находятся в [.env](.env)
 ```
+REDIS_PASSWORD=sdnsfnsdnsgqerqew234whdnd
+
+
 # Logger
 ENV=debug
 
@@ -61,7 +64,7 @@ SERVER_MAX_CONN=1
 
 # Databse
 DB_TYPE=redis
-DB_URL=redis://:sdnsfnsdnsgqerqew234whdnd@redis:6379
+DB_URL=redis://:${REDIS_PASSWORD}@redis:6379
 
 # URL Shortener
 URL_TTL=60m

@@ -6,8 +6,12 @@ import (
 	"shortener/internal/infra/logger"
 )
 
+const (
+	PATH = "../.env"
+)
+
 func main() {
-	cfg := config.MustLoad()
+	cfg := config.MustLoad(PATH)
 
 	log := logger.SetupLogger(cfg.Env)
 
