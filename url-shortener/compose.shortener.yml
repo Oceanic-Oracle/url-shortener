@@ -1,11 +1,13 @@
 services:
   shortener:
     build:
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
     ports:
       - "8080"
     networks:
       - shortener-network
+    volumes:
+      - ../.env:/.env
     depends_on:
       redis:
         condition: service_healthy
