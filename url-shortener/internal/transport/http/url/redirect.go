@@ -10,7 +10,7 @@ import (
 
 	"shortener/internal/logctx"
 	"shortener/internal/service"
-	errorhandle "shortener/internal/transport/http/error"
+	httperror "shortener/internal/transport/http/error"
 )
 
 func RedirectURL(svc *service.ServiceURL, log *slog.Logger) http.HandlerFunc {
@@ -23,6 +23,11 @@ func RedirectURL(svc *service.ServiceURL, log *slog.Logger) http.HandlerFunc {
 		)
 
 		code := chi.URLParam(r, "code")
+		if code == "" {
+			httperror.SendHTTPError(w, httperror.ErrBadRequest)
+
+			return
+		}
 
 		ctx = logctx.WithCode(ctx, code)
 
@@ -32,7 +37,7 @@ func RedirectURL(svc *service.ServiceURL, log *slog.Logger) http.HandlerFunc {
 		url, err := svc.GetLongURL(ctx, code)
 		if err != nil {
 			log.ErrorContext(ctx, "Failed to get URL", slog.Any("err", err))
-			errorhandle.SendAppError(w, err)
+			httperror.SendHTTPError(w, err)
 
 			return
 		}

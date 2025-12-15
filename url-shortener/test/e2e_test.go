@@ -39,7 +39,7 @@ func TestMain(m *testing.M) {
 	}()
 
 	// TODO: Написать эндпоинт /ping для корректного ожидания
-	time.Sleep(10*time.Second)
+	time.Sleep(10 * time.Second)
 
 	code := m.Run()
 	os.Exit(code)

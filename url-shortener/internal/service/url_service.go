@@ -34,13 +34,13 @@ func (su *ServiceURL) CreateShortURL(ctx context.Context, longURL string) (strin
 
 		exLongURL, err := su.repos.URL.GetLongURLByShort(ctx, url.ShortURL(shortURL))
 		if err != nil {
-			su.log.ErrorContext(ctx, "Failed to fetch existing long URL after collision", slog.Any("err", err))
-			return "", WrapErrInternalServer(err)
+			su.log.ErrorContext(ctx, "Failed to fetch existing URL after collision", slog.Any("err", err))
+			return "", ErrStorage
 		}
 
 		if exLongURL != url.LongURL(longURL) {
 			su.log.ErrorContext(ctx, "Short code collision detected", slog.Any("err", err))
-			return "", WrapErrInternalServer(ErrURLCollision)
+			return "", ErrURLCollision
 		}
 
 		return shortURL, nil
@@ -48,7 +48,7 @@ func (su *ServiceURL) CreateShortURL(ctx context.Context, longURL string) (strin
 
 	su.log.ErrorContext(ctx, "Failed to save short URL", "err", err)
 
-	return "", WrapErrInternalServer(err)
+	return "", ErrStorage
 }
 
 func (su *ServiceURL) GetLongURL(ctx context.Context, shortURL string) (string, error) {
@@ -58,12 +58,12 @@ func (su *ServiceURL) GetLongURL(ctx context.Context, shortURL string) (string, 
 	if err != nil {
 		if errors.Is(err, url.ErrURLNotFound) {
 			su.log.WarnContext(ctx, "URL not found", slog.Any("err", err))
-			return "", WrapErrNotFound(err)
+			return "", ErrURLNotFound
 		}
 
 		su.log.ErrorContext(ctx, "Failed to get URL", slog.Any("err", err))
 
-		return "", WrapErrInternalServer(err)
+		return "", ErrStorage
 	}
 
 	return string(longURL), nil
