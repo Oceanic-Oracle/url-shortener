@@ -10,7 +10,7 @@ import (
 	"shortener/internal/dto"
 	"shortener/internal/logctx"
 	"shortener/internal/service"
-	errorhandle "shortener/internal/transport/http/error"
+	httperror "shortener/internal/transport/http/error"
 )
 
 func CreateURL(svc *service.ServiceURL, host string, log *slog.Logger) http.HandlerFunc {
@@ -25,7 +25,7 @@ func CreateURL(svc *service.ServiceURL, host string, log *slog.Logger) http.Hand
 		var body dto.CreateCodeURLRequest
 		if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
 			log.WarnContext(ctx, "Invalid JSON in request body", slog.Any("error", err))
-			errorhandle.SendAppError(w, service.WrapErrBadRequest(err))
+			httperror.SendHTTPError(w, httperror.ErrBadRequest)
 
 			return
 		}
@@ -34,7 +34,7 @@ func CreateURL(svc *service.ServiceURL, host string, log *slog.Logger) http.Hand
 
 		if err := body.Validate(host); err != nil {
 			log.WarnContext(ctx, "Invalid URL in request body", slog.Any("error", err))
-			errorhandle.SendAppError(w, service.WrapErrBadRequest(err))
+			httperror.SendHTTPError(w, httperror.ErrBadRequest)
 
 			return
 		}
@@ -45,7 +45,7 @@ func CreateURL(svc *service.ServiceURL, host string, log *slog.Logger) http.Hand
 		code, err := svc.CreateShortURL(ctx, body.URL)
 		if err != nil {
 			log.ErrorContext(ctx, "Error creating shortcode", slog.Any("error", err))
-			errorhandle.SendAppError(w, err)
+			httperror.SendHTTPError(w, err)
 
 			return
 		}
