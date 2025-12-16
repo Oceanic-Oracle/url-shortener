@@ -1,6 +1,8 @@
 package main
 
 import (
+	"os"
+
 	"shortener/internal/bootstrap"
 	"shortener/internal/config"
 	"shortener/internal/infra/logger"
@@ -15,5 +17,10 @@ func main() {
 
 	log := logger.SetupLogger(cfg.Env)
 
-	app.NewBootstrap(cfg, log).Run()
+	if err := app.NewBootstrap(cfg, log).Run(); err != nil {
+		log.Error("application failed", "error", err)
+		os.Exit(1)
+	}
+
+	log.Info("application exited successfully")
 }

@@ -58,7 +58,11 @@ func (s *Server) CreateServer() func() {
 		}
 	}()
 
-	return func() { _ = srv.Close() }
+	return func() {
+		if err := srv.Close(); err != nil {
+			s.log.Error("failed to close server", slog.Any("err", err))
+		}
+	}
 }
 
 func NewRestAPI(cfg *config.HTTP, svc *service.ServiceURL, log *slog.Logger) *Server {
