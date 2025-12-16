@@ -2,6 +2,7 @@ package app
 
 import (
 	"context"
+	"fmt"
 	"log/slog"
 	"os"
 	"os/signal"
@@ -9,9 +10,7 @@ import (
 	"time"
 
 	"shortener/internal/config"
-	"shortener/internal/infra/database"
 	"shortener/internal/repo"
-	urlredis "shortener/internal/repo/url/redis"
 	"shortener/internal/service"
 	"shortener/internal/transport/http"
 )
@@ -21,8 +20,16 @@ type Bootstrap struct {
 	cfg *config.Config
 }
 
-func (b *Bootstrap) Run() {
-	repos, closeDB := b.initRepo()
+func (b *Bootstrap) Run() error {
+	factory := repo.NewFactory(&b.cfg.Storage, b.log)
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	repos, closeDB, err := factory.Create(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to initialize repositories: %w", err)
+	}
 	defer closeDB()
 
 	svc := service.NewServiceURL(b.cfg.URLShortener, repos, b.log)
@@ -37,35 +44,8 @@ func (b *Bootstrap) Run() {
 	<-stop
 
 	b.log.Info("shutting down...")
-}
 
-func (b *Bootstrap) initRepo() (*repo.Repo, func()) {
-	switch b.cfg.Storage.Type {
-	case "redis":
-		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-
-		rdb, err := database.GetRedisConnectionPool(ctx, b.cfg.Storage.URL, b.log)
-
-		cancel()
-
-		if err != nil {
-			b.log.Error("failed to connect to redis", "error", err)
-			return nil, func() {}
-		}
-
-		b.log.Info("successful connect to redis")
-
-		urlDB := urlredis.NewURLRedis(rdb, b.log)
-
-		repos := repo.NewRepo(urlDB)
-
-		return repos, func() { _ = rdb.Close() }
-	default:
-		b.log.Error("unsupported storage type", "type", b.cfg.Storage.Type)
-		os.Exit(1)
-
-		return nil, func() {}
-	}
+	return nil
 }
 
 func NewBootstrap(cfg *config.Config, log *slog.Logger) *Bootstrap {
