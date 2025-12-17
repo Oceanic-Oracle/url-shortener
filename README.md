@@ -1,12 +1,16 @@
 ## Запуск
-#### Убедитесь, что Docker запущен, затем соберите и запустите сервис:
+1. **Скопируйте конфигурацию:**
+```bash
+cp .env.example .env
+```
+2. **Убедитесь, что Docker запущен, затем соберите и запустите сервис:**
 ```bash
 docker compose up --build --scale shortener={number of containers}
 ```
 После запуска:
 - Сервис будет доступен на http://localhost
 
-#### Сервер работает по адресу https://url-shortener-1cjv.onrender.com
+#### Сервер также работает по адресу https://url-shortener-1cjv.onrender.com
 
 ## Тесты
 Тесты находятся в папке [test](url-shortener/test/) \
@@ -34,7 +38,7 @@ POST /shorten
 GET /{code}
 ```
 <div>
-  <img src="images/redirect.png" alt="test" style="width:60%; height: auto;">
+  <img src="images/redirect.png?v=2" alt="test" style="width:60%; height: auto;">
 </div>
 
 ## Линтер
@@ -47,13 +51,17 @@ make lint
 ```
 
 ## Переменные окружения
-Находятся в [.env](.env)
+Находятся в [.env](.env.example)
 ```
 REDIS_PASSWORD=sdnsfnsdnsgqerqew234whdnd
 
 
 # Logger
-ENV=debug
+REDIS_PASSWORD=REDIS_PASSWORD
+
+
+# Logger
+LEVEL=debug
 
 # Server
 SERVER_HOST=localhost
@@ -69,5 +77,5 @@ DB_URL=redis://:${REDIS_PASSWORD}@redis:6379
 # URL Shortener
 URL_TTL=60m
 URL_LENGTH=10
-URL_SALT=6gdpqq9chviajjkflnvGVHjklmlkva7
+URL_SALT=SALT
 ```
