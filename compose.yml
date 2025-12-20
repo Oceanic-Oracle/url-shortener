@@ -1,7 +1,7 @@
 include:
-  - nginx/compose.nginx.yml
+  - infra/nginx/compose.nginx.yml
+  - infra/redis/compose.redis.yml
   - url-shortener/compose.shortener.yml
-  - redis/compose.redis.yml
 
 networks:
   shortener-network:

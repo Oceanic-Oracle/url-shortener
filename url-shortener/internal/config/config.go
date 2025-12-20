@@ -15,11 +15,12 @@ type Config struct {
 }
 
 type HTTP struct {
-	Host        string `env:"SERVER_HOST"`
-	Addr        string `env:"SERVER_ADDR"`
-	Timeout     string `env:"SERVER_TIMEOUT_SECONDS"`
-	IdleTimeout string `env:"SERVER_IDLE_TIMEOUT_SECONDS"`
-	MaxConn     string `env:"SERVER_MAX_CONN"`
+	Host        string        `env:"SERVER_HOST"`
+	Addr        string        `env:"SERVER_ADDR"`
+	AddrMetrics string        `env:"SERVER_METRICS_ADDR"`
+	Timeout     time.Duration `env:"SERVER_TIMEOUT_SECONDS"`
+	IdleTimeout time.Duration `env:"SERVER_IDLE_TIMEOUT_SECONDS"`
+	MaxConn     string        `env:"SERVER_MAX_CONN"`
 }
 
 type Storage struct {

@@ -24,6 +24,7 @@ make e2e
 - 1 контейнер
 - 30 параллельных соединений
 - 10 минут нагрузки
+- localhost
 
 #### 1. Создание короткой ссылки
 ```bash
@@ -53,10 +54,6 @@ make lint
 ## Переменные окружения
 Находятся в [.env](.env.example)
 ```
-REDIS_PASSWORD=sdnsfnsdnsgqerqew234whdnd
-
-
-# Logger
 REDIS_PASSWORD=REDIS_PASSWORD
 
 
@@ -66,8 +63,9 @@ LEVEL=debug
 # Server
 SERVER_HOST=localhost
 SERVER_ADDR=:8080
-SERVER_TIMEOUT_SECONDS=60
-SERVER_IDLE_TIMEOUT_SECONDS=4
+SERVER_METRICS_ADDR=:8081
+SERVER_TIMEOUT_SECONDS=60s
+SERVER_IDLE_TIMEOUT_SECONDS=4s
 SERVER_MAX_CONN=1
 
 # Databse

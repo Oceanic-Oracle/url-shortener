@@ -6,6 +6,7 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
     depends_on:
-      - shortener
+      shortener:
+        condition: service_healthy
     networks:
       - shortener-network
