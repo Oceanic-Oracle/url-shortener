@@ -8,8 +8,8 @@ import (
 
 	"shortener/internal/config"
 	"shortener/internal/service"
-	"shortener/internal/transport/http/middleware"
-	"shortener/internal/transport/http/url"
+	"shortener/internal/transport/http/api/middleware"
+	"shortener/internal/transport/http/api/url"
 )
 
 type Server struct {
@@ -21,13 +21,15 @@ type Server struct {
 func (s *Server) CreateServer() func() {
 	router := chi.NewRouter()
 
+	router.Use(middleware.MiddlewareReqID, middleware.ObserveMiddleware)
+
 	router.Get("/ping", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		_, _ = w.Write([]byte("ping"))
 	})
 
-	router.Post("/shorten", middleware.MiddlewareReqID(url.CreateURL(s.svc, s.cfg.Host, s.log)))
-	router.Get("/{code}", middleware.MiddlewareReqID(url.RedirectURL(s.svc, s.log)))
+	router.Post("/shorten", url.CreateURL(s.svc, s.cfg.Host, s.log))
+	router.Get("/{code}", url.RedirectURL(s.svc, s.log))
 
 	corsHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Origin", "*")

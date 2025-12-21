@@ -10,7 +10,7 @@ import (
 	"shortener/internal/dto"
 	"shortener/internal/logctx"
 	"shortener/internal/service"
-	httperror "shortener/internal/transport/http/error"
+	httperror "shortener/internal/transport/http/api/error"
 )
 
 func CreateURL(svc *service.ServiceURL, host string, log *slog.Logger) http.HandlerFunc {

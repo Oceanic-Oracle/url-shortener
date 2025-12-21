@@ -1,6 +1,12 @@
 services:
-  image: prom/prometheus:latest
-  volumes:
-    - ./prometheus.yml:/etc/prometheus/prometheus.yml
-  ports:
-    - "19090:9090"
+  prometheus:
+    image: prom/prometheus:latest
+    networks:
+        - shortener-network
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "19090:9090"
+    depends_on:
+      shortener:
+        condition: service_healthy

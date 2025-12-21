@@ -10,10 +10,10 @@ import (
 	"time"
 
 	"shortener/internal/config"
-	"shortener/internal/metrics"
 	"shortener/internal/repo"
 	"shortener/internal/service"
-	"shortener/internal/transport/http"
+	"shortener/internal/transport/http/api"
+	"shortener/internal/transport/http/metrics"
 )
 
 type Bootstrap struct {
