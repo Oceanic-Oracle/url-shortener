@@ -1,0 +1,16 @@
+services:
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    networks:
+      - shortener-network
+    volumes:
+      - ./datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml
+      - grafanadata:/var/lib/grafana
+
+volumes:
+  grafanadata:

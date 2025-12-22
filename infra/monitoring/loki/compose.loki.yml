@@ -1,0 +1,9 @@
+services:
+  loki:
+    image: grafana/loki:latest
+    ports:
+      - "3100:3100"
+    networks:
+      - shortener-network
+    volumes:
+      - ./loki-config.yaml:/etc/loki/local-config.yaml

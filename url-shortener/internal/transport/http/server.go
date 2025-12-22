@@ -5,11 +5,12 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 
 	"shortener/internal/config"
 	"shortener/internal/service"
-	"shortener/internal/transport/http/api/middleware"
-	"shortener/internal/transport/http/api/url"
+	"shortener/internal/transport/http/middleware"
+	"shortener/internal/transport/http/url"
 )
 
 type Server struct {
@@ -30,6 +31,7 @@ func (s *Server) CreateServer() func() {
 
 	router.Post("/shorten", url.CreateURL(s.svc, s.cfg.Host, s.log))
 	router.Get("/{code}", url.RedirectURL(s.svc, s.log))
+	router.Handle("/metrics", promhttp.Handler())
 
 	corsHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Origin", "*")

@@ -12,8 +12,7 @@ import (
 	"shortener/internal/config"
 	"shortener/internal/repo"
 	"shortener/internal/service"
-	"shortener/internal/transport/http/api"
-	"shortener/internal/transport/http/metrics"
+	"shortener/internal/transport/http"
 )
 
 type Bootstrap struct {
@@ -32,9 +31,6 @@ func (b *Bootstrap) Run() error {
 		return fmt.Errorf("failed to initialize repositories: %w", err)
 	}
 	defer closeDB()
-
-	closeMt := metrics.CreateServer(b.cfg.HTTP, b.log)
-	defer closeMt()
 
 	svc := service.NewServiceURL(b.cfg.URLShortener, repos, b.log)
 

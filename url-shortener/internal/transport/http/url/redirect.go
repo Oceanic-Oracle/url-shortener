@@ -10,7 +10,7 @@ import (
 
 	"shortener/internal/logctx"
 	"shortener/internal/service"
-	httperror "shortener/internal/transport/http/api/error"
+	httperror "shortener/internal/transport/http/error"
 )
 
 func RedirectURL(svc *service.ServiceURL, log *slog.Logger) http.HandlerFunc {
