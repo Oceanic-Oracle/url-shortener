@@ -1,7 +1,9 @@
 include:
-  - nginx/compose.nginx.yml
+  - infra/nginx/compose.nginx.yml
+  - infra/redis/compose.redis.yml
+  - infra/monitoring/prometheus/compose.prometheus.yml
+  - infra/monitoring/grafana/compose.grafana.yml
   - url-shortener/compose.shortener.yml
-  - redis/compose.redis.yml
 
 networks:
   shortener-network:

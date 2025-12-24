@@ -7,9 +7,10 @@ import (
 )
 
 type Ctx struct {
-	ReqID string
-	URL   string
-	Code  string
+	ReqID  string
+	URL    string
+	Code   string
+	Status int
 }
 
 type keyType int
@@ -26,4 +27,12 @@ func WithURL(ctx context.Context, url string) context.Context {
 
 func WithCode(ctx context.Context, code string) context.Context {
 	return context.WithValue(ctx, key, Ctx{Code: code})
+}
+
+func GetReqId(ctx context.Context) string {
+	if c, ok := ctx.Value(key).(Ctx); ok && c.ReqID != "" {
+		return c.ReqID
+	}
+
+	return "unknown"
 }

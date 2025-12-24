@@ -3,10 +3,9 @@ package http
 import (
 	"log/slog"
 	"net/http"
-	"strconv"
-	"time"
 
 	"github.com/go-chi/chi"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 
 	"shortener/internal/config"
 	"shortener/internal/service"
@@ -23,8 +22,16 @@ type Server struct {
 func (s *Server) CreateServer() func() {
 	router := chi.NewRouter()
 
-	router.Post("/shorten", middleware.MiddlewareReqID(url.CreateURL(s.svc, s.cfg.Host, s.log)))
-	router.Get("/{code}", middleware.MiddlewareReqID(url.RedirectURL(s.svc, s.log)))
+	router.Use(middleware.MiddlewareReqID, middleware.ObserveMiddleware)
+
+	router.Get("/ping", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write([]byte("ping"))
+	})
+
+	router.Post("/shorten", url.CreateURL(s.svc, s.cfg.Host, s.log))
+	router.Get("/{code}", url.RedirectURL(s.svc, s.log))
+	router.Handle("/metrics", promhttp.Handler())
 
 	corsHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
@@ -39,14 +46,12 @@ func (s *Server) CreateServer() func() {
 		router.ServeHTTP(w, r)
 	})
 
-	idleTimeout, _ := strconv.Atoi(s.cfg.IdleTimeout)
-	timeout, _ := strconv.Atoi(s.cfg.Timeout)
 	srv := &http.Server{
 		Addr:         s.cfg.Addr,
 		Handler:      corsHandler,
-		ReadTimeout:  time.Duration(timeout) * time.Second,
-		WriteTimeout: time.Duration(timeout) * time.Second,
-		IdleTimeout:  time.Duration(idleTimeout) * time.Second,
+		ReadTimeout:  s.cfg.Timeout,
+		WriteTimeout: s.cfg.Timeout,
+		IdleTimeout:  s.cfg.IdleTimeout,
 	}
 
 	go func() {

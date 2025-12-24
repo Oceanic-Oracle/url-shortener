@@ -6,9 +6,9 @@ import (
 	"shortener/internal/logctx"
 )
 
-func MiddlewareReqID(next http.HandlerFunc) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
+func MiddlewareReqID(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := logctx.WithReqID(r.Context())
-		next(w, r.WithContext(ctx))
-	}
+		next.ServeHTTP(w, r.WithContext(ctx))
+	})
 }

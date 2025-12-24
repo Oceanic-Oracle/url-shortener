@@ -26,7 +26,7 @@ func SetupLogger(env string) *slog.Logger {
 	default:
 		level = slog.LevelDebug
 	}
-
+	
 	return slog.New(logctx.NewHandlerMiddleware(
 		slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: level}),
 	))

@@ -1,0 +1,16 @@
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    networks:
+      - shortener-network
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheusdata:/prometheus
+    ports:
+      - "9090"
+    depends_on:
+      shortener:
+        condition: service_healthy
+
+volumes:
+  prometheusdata:
