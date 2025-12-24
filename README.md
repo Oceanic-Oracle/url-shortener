@@ -7,10 +7,11 @@ cp .env.example .env
 ```bash
 docker compose up --build --scale shortener={number of containers}
 ```
-После запуска:
-- Сервис будет доступен на http://localhost
-
-#### Сервер также работает по адресу https://url-shortener-1cjv.onrender.com
+3. Сервис доступен на http://localhost
+4. Сервер также работает по адресу https://url-shortener-1cjv.onrender.com 
+5.  Мониторинг
+- Grafana работает по адресу http://localhost:3000 
+- Пример dashboard: [example-dashboard.json](infra/monitoring/grafana/example-dashboard.json)
 
 ## Тесты
 Тесты находятся в папке [test](url-shortener/test/) \

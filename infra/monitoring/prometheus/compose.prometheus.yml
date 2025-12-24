@@ -7,7 +7,7 @@ services:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheusdata:/prometheus
     ports:
-      - "19090:9090"
+      - "9090"
     depends_on:
       shortener:
         condition: service_healthy
